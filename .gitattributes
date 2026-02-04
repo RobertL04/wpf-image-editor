@@ -1,0 +1,33 @@
+# Auto normalize line endings
+* text=auto
+
+# Explicit text files
+*.cs     text
+*.xaml   text
+*.xml    text
+*.json   text
+*.md     text
+*.txt    text
+*.yml    text
+*.yaml   text
+
+# Binary files
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.bmp    binary
+*.ico    binary
+
+*.wav    binary
+*.mp3    binary
+*.ogg    binary
+
+*.ttf    binary
+*.otf    binary
+
+# Visual Studio solution & project files
+*.sln    text
+*.csproj text
+*.props  text
+*.targets text
