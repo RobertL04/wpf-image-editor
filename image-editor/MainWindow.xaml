@@ -17,6 +17,9 @@
         <Rectangle Grid.Row="0"/>
         <Rectangle Grid.Row="1" Fill="DimGray"/>
         <Rectangle Grid.Row="2"/>
+
+        <Image Grid.Row="2" Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}" Source="{Binding Canvas.WriteableBitmap}"/>
+
         <Rectangle Grid.Row="3" Fill="DimGray"/>
     </Grid>
 </Window>

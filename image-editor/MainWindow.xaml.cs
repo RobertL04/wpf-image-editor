@@ -1,3 +1,4 @@
+using image_editor.ViewModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,14 +12,13 @@ using System.Windows.Shapes;
 
 namespace image_editor
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+			MainWindowViewModel vm = new MainWindowViewModel();
+			DataContext = vm;
         }
 	}
 }
