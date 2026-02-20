@@ -38,10 +38,7 @@ namespace image_editor.Model
 
 		public void DrawPixelsBetween(Point p0, Point p1)
 		{
-			int x0 = p0.X;
-			int y0 = p0.Y;
-			int x1 = p1.X;
-			int y1 = p1.Y;
+			int x0 = p0.X, y0 = p0.Y, x1 = p1.X,  y1 = p1.Y;
 
 			int dx = int.Abs(x1 - x0);
 			int dy = int.Abs(y1 - y0);
@@ -62,23 +59,20 @@ namespace image_editor.Model
 			int err = dx;
 			err >>= 1;
 
-			int count = 0;
-			while (count <= dx)
+			for(int i = 0; i <= dx; i++)
 			{
 				if (!steep) SetPixel(x0, y0, Colors.Black);
 				else SetPixel(y0, x0, Colors.Black);
 
+				err += dy;
+				x0 += xStep;
 				if (err >= dx)
 				{
 					err -= dx;
 					y0 += yStep;
 				}
-				err += dy;
-				x0 += xStep;
 
-				count++;
 			}
-
 		}
 
 		private void Swap(ref int a, ref int b)
