@@ -19,7 +19,8 @@
         <Rectangle Grid.Row="2"/>
 
         <Image Grid.Row="2" Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
-               Source="{Binding Canvas.WriteableBitmap}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseMove="MainCanvas_MouseMove"/>
+               Source="{Binding Canvas.WriteableBitmap}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseMove="MainCanvas_MouseMove"
+               RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="None"/>
 
         <Rectangle Grid.Row="3" Fill="DimGray"/>
     </Grid>

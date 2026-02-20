@@ -28,10 +28,6 @@ namespace image_editor.Model
 			WriteableBitmap.WritePixels(new Int32Rect(0, 0, PixelWidth, PixelHeight), _frameBuffer, PixelWidth * 4, 0);
 			CompositionTarget.Rendering += OnRender;
 
-			/*DrawPixelsBetween(new(0,199), new(99,149));
-			DrawPixelsBetween(new(0,199), new(99,0));
-			DrawPixelsBetween(new(199,199), new(99,149));
-			DrawPixelsBetween(new(199,199), new(99,0));*/
 		}
 
 		private void InitFrameBuffer()
@@ -42,89 +38,52 @@ namespace image_editor.Model
 
 		public void DrawPixelsBetween(Point p0, Point p1)
 		{
-			int xDiff = p1.X - p0.X;
-			int yDiff = p1.Y - p0.Y;
+			int x0 = p0.X;
+			int y0 = p0.Y;
+			int x1 = p1.X;
+			int y1 = p1.Y;
 
-			int dx = xDiff < 0 ? -2 * xDiff : 2 * xDiff;
-			int dy = yDiff < 0 ? 2 * yDiff : -2 * yDiff;
+			int dx = int.Abs(x1 - x0);
+			int dy = int.Abs(y1 - y0);
 
+			int xStep = x1 >= x0 ? 1 : -1;
+			int yStep = y1 >= y0 ? 1 : -1;
 
-			int d = dy + dx;
-			int x = p0.X;
-			int y = p0.Y;
+			bool steep = dy > dx;
 
-			if(xDiff >= 0)
+			if (steep)
 			{
-				bool isSteep = xDiff < -yDiff;
-				while (x <= p1.X)
-				{
-					SetPixel(x, y, Colors.Black);
-					if (d < 0)
-					{
-						if (!isSteep)
-						{
-							d += dy + dx;
-							y--;
-						}
-						else
-						{
-							d += dx;
-						}
-					}
-					else
-					{
-						if (!isSteep)
-						{
-							d += dy;
-						}
-						else
-						{
-							d += dy + dx;
-							x++;
-						}
-					}
-
-					if (!isSteep) x++;
-					else y--;
-
-				}
+				Swap(ref x0, ref y0);
+				Swap(ref x1, ref y1);
+				Swap(ref dx, ref dy);
+				Swap(ref xStep, ref yStep);
 			}
-			else
+
+			int err = dx;
+			err >>= 1;
+
+			int count = 0;
+			while (count <= dx)
 			{
-				bool isSteep = -xDiff < -yDiff;
-				while (x > p1.X)
+				if (!steep) SetPixel(x0, y0, Colors.Black);
+				else SetPixel(y0, x0, Colors.Black);
+
+				if (err >= dx)
 				{
-					SetPixel(x, y, Colors.Black);
-					if (d < 0)
-					{
-						if (!isSteep)
-						{
-							d += dy + dx;
-							y--;
-						}
-						else
-						{
-							d += dx;
-						}
-					}
-					else
-					{
-						if (!isSteep)
-						{
-							d += dy;
-						}
-						else
-						{
-							d += dy + dx;
-							x--;
-						}
-					}
-
-					if (!isSteep) x--;
-					else y--;
-
+					err -= dx;
+					y0 += yStep;
 				}
+				err += dy;
+				x0 += xStep;
+
+				count++;
 			}
+
+		}
+
+		private void Swap(ref int a, ref int b)
+		{
+			int temp = a; a = b; b = temp;
 		}
 
 		public void SetPixel(int x, int y, Color c)

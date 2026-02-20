@@ -11,7 +11,7 @@ namespace image_editor.ViewModel
     class MainWindowViewModel : ViewModelBase
     {
 		private MainCanvas _canvas;
-		private Point _prevMousePosition;
+		private System.Drawing.Point _prevMousePosition;
 		public MainCanvas Canvas
 		{
 			get { return _canvas; }
@@ -25,24 +25,25 @@ namespace image_editor.ViewModel
 		public MainWindowViewModel()
 		{
 			Canvas = new MainCanvas(200, 200);
-			_prevMousePosition = new Point();
+			_prevMousePosition = new System.Drawing.Point();
 		}
 
 		public void HandleMouseLeftClickDrag(Point mousePos)
 		{
 			//Canvas.SetPixel((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y), Colors.Black);
 
-			System.Drawing.Point p0 = new System.Drawing.Point((int)_prevMousePosition.X, (int)_prevMousePosition.Y);
-			System.Drawing.Point p1 = new System.Drawing.Point((int)mousePos.X, (int)mousePos.Y);
+			System.Drawing.Point p0 = _prevMousePosition;
+			System.Drawing.Point p1 = new System.Drawing.Point((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y));
 
 			Canvas.DrawPixelsBetween(p0, p1);
 
-			_prevMousePosition = mousePos;
+			_prevMousePosition = p1;
 		}
 
 		public void HandleMousLeftButttonDown(Point mousePos)
 		{
-			_prevMousePosition = mousePos;
+			Canvas.SetPixel((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y), Colors.Black);
+			_prevMousePosition = new System.Drawing.Point((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y));
 		}
     }
 }
