@@ -1,3 +1,4 @@
+using image_editor.Model;
 using image_editor.ViewModel;
 using System.Diagnostics;
 using System.Text;
@@ -24,18 +25,41 @@ namespace image_editor
 
 		private void MainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
+			if (DataContext is not MainWindowViewModel vm) return;
+			
 			Point pos = e.GetPosition(MainCanvas);
-			if (DataContext is MainWindowViewModel vm) vm.HandleMousLeftButttonDown(pos);
+			vm.HandleMousLeftButttonDown(pos);
+			MainCanvas.CaptureMouse();
+		}
+		private void MainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			MainCanvas.ReleaseMouseCapture();
 		}
 
-		private void MainCanvas_MouseMove(object sender, MouseEventArgs e)
+		private void Window_MouseMove(object sender, MouseEventArgs e)
 		{
+			if (DataContext is not MainWindowViewModel vm) return;
+
 			Point pos = e.GetPosition(MainCanvas);
-			Debug.WriteLine(pos);
-			if (e.LeftButton == MouseButtonState.Pressed)
+
+			if (e.LeftButton == MouseButtonState.Pressed && MainCanvas.IsMouseCaptured)
 			{
-				if (DataContext is MainWindowViewModel vm) vm.HandleMouseLeftClickDrag(pos);
+				vm.HandleMouseLeftClickDrag(pos);
 			}
 		}
+
+		private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			if (DataContext is not MainWindowViewModel vm) return;
+			if (!MainCanvas.IsMouseDirectlyOver) vm.SetCanvasStatus(false);
+		}
+
+		private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			if (DataContext is not MainWindowViewModel vm) return;
+			vm.SetCanvasStatus(true);
+		}
+
+		
 	}
 }

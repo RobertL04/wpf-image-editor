@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -11,6 +12,8 @@ namespace image_editor.Model
 		public int PixelWidth { get; set; }
 		public int PixelHeight { get; set; }
 
+		public bool IsActive { get; set; }
+
 		private byte[] _frameBuffer;
 		private Int32Rect _dirtyRect;
 		private int _minX, _maxX;
@@ -21,6 +24,7 @@ namespace image_editor.Model
 			PixelWidth = width;
 			PixelHeight = height;
 			InitFrameBuffer();
+			IsActive = true;
 			_dirtyRect = new Int32Rect();
 
 
@@ -38,6 +42,7 @@ namespace image_editor.Model
 
 		public void DrawPixelsBetween(Point p0, Point p1)
 		{
+			if (!IsActive) return;
 			int x0 = p0.X, y0 = p0.Y, x1 = p1.X,  y1 = p1.Y;
 
 			int dx = int.Abs(x1 - x0);
@@ -82,7 +87,7 @@ namespace image_editor.Model
 
 		public void SetPixel(int x, int y, Color c)
 		{
-			if(x < 0 || x >= PixelWidth ||  y < 0 || y >= PixelHeight) return;
+			if (!IsActive || x < 0 || x >= PixelWidth ||  y < 0 || y >= PixelHeight) return;
 			int stride = PixelWidth * 4;
 			_frameBuffer[4*x + stride * y] = c.B; // B
 			_frameBuffer[4*x + stride * y + 1] = c.G; // G

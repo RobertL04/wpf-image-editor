@@ -1,6 +1,7 @@
 
 using image_editor.Model;
 using image_editor.MVVM;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
@@ -43,7 +44,17 @@ namespace image_editor.ViewModel
 		public void HandleMousLeftButttonDown(Point mousePos)
 		{
 			Canvas.SetPixel((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y), Colors.Black);
+			SetPreviousMousePosition(mousePos);
+		}
+
+		public void SetPreviousMousePosition(Point mousePos)
+		{
 			_prevMousePosition = new System.Drawing.Point((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y));
+		}
+
+		public void SetCanvasStatus(bool status)
+		{
+			Canvas.IsActive = status;
 		}
     }
 }
