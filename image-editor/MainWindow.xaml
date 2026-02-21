@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:image_editor" Background="#333333"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -14,9 +15,16 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.Row="0"/>
-        <Rectangle Grid.Row="1" Fill="DimGray"/>
-        <Rectangle Grid.Row="2"/>
-        <Rectangle Grid.Row="3" Fill="DimGray"/>
+        <Rectangle Grid.Row="0" Fill="Black" Panel.ZIndex="1"/>
+        <Rectangle Grid.Row="1" Fill="DimGray" Panel.ZIndex="1"/>
+        <Rectangle Grid.Row="2" Panel.ZIndex="-1"/>
+
+        <Image Grid.Row="2" Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
+               Source="{Binding Canvas.WriteableBitmap}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
+               RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="None"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               Panel.ZIndex="0"/>
+
+        <Rectangle Grid.Row="3" Fill="DimGray" Panel.ZIndex="1"/>
     </Grid>
 </Window>
