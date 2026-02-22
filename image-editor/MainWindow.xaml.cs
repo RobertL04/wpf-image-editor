@@ -16,11 +16,20 @@ namespace image_editor
 {
     public partial class MainWindow : Window
     {
+		private double _targetScale;
+		private ScaleTransform _scaleTransform;
+
         public MainWindow()
         {
             InitializeComponent();
 			MainWindowViewModel vm = new MainWindowViewModel();
 			DataContext = vm;
+
+			MainCanvas.RenderTransformOrigin = new Point(0.5f, 0.5f);
+			_targetScale = 1;
+			_scaleTransform = new ScaleTransform(1, 1);
+
+			CompositionTarget.Rendering += ScaleCanvas;
         }
 
 		private void MainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -60,6 +69,25 @@ namespace image_editor
 			vm.SetCanvasStatus(true);
 		}
 
-		
+		private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			if (Keyboard.IsKeyDown(Key.LeftCtrl))
+			{
+				double scale = Math.Sign(e.Delta) * 0.2;
+				_targetScale = _scaleTransform.ScaleX + _scaleTransform.ScaleX * scale;
+
+				MainCanvas.RenderTransform = _scaleTransform;
+			}
+		}
+
+		private void ScaleCanvas(object? sender, EventArgs e)
+		{
+			_scaleTransform.ScaleX = Double.Lerp(_scaleTransform.ScaleX, _targetScale, 1 - Math.Exp(-0.3));
+
+			Debug.WriteLine(_scaleTransform.ScaleX);
+
+			_scaleTransform.ScaleX = Math.Clamp(_scaleTransform.ScaleX, 0.2, 20);
+			_scaleTransform.ScaleY = _scaleTransform.ScaleX;
+		}
 	}
 }

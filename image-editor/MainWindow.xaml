@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:image_editor" Background="#333333"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown" MouseLeftButtonUp="Window_MouseLeftButtonUp">
+        MouseMove="Window_MouseMove" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseLeftButtonUp="Window_MouseLeftButtonUp" MouseWheel="Window_MouseWheel">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -20,7 +21,8 @@
         <Rectangle Grid.Row="2" Panel.ZIndex="-1"/>
 
         <Image Grid.Row="2" Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
-               Source="{Binding Canvas.WriteableBitmap}" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
+               Source="{Binding Canvas.WriteableBitmap}"
+               MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
                RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="None"
                HorizontalAlignment="Center" VerticalAlignment="Center"
                Panel.ZIndex="0"/>

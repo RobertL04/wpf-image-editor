@@ -31,8 +31,6 @@ namespace image_editor.ViewModel
 
 		public void HandleMouseLeftClickDrag(Point mousePos)
 		{
-			//Canvas.SetPixel((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y), Colors.Black);
-
 			System.Drawing.Point p0 = _prevMousePosition;
 			System.Drawing.Point p1 = new System.Drawing.Point((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y));
 
