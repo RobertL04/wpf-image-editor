@@ -18,6 +18,9 @@ namespace image_editor
     {
 		private double _targetScale;
 		private ScaleTransform _scaleTransform;
+		private double _verticalOffset;
+		private double _horizontalOffset;
+
 
         public MainWindow()
         {
@@ -28,6 +31,7 @@ namespace image_editor
 			MainCanvas.RenderTransformOrigin = new Point(0.5f, 0.5f);
 			_targetScale = 1;
 			_scaleTransform = new ScaleTransform(1, 1);
+			MainCanvas.RenderTransform = _scaleTransform;
 
 			CompositionTarget.Rendering += ScaleCanvas;
         }
@@ -71,23 +75,34 @@ namespace image_editor
 
 		private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			if (Keyboard.IsKeyDown(Key.LeftCtrl))
-			{
-				double scale = Math.Sign(e.Delta) * 0.2;
-				_targetScale = _scaleTransform.ScaleX + _scaleTransform.ScaleX * scale;
-
-				MainCanvas.RenderTransform = _scaleTransform;
-			}
+			
 		}
 
 		private void ScaleCanvas(object? sender, EventArgs e)
 		{
 			_scaleTransform.ScaleX = Double.Lerp(_scaleTransform.ScaleX, _targetScale, 1 - Math.Exp(-0.3));
 
-			Debug.WriteLine(_scaleTransform.ScaleX);
-
-			_scaleTransform.ScaleX = Math.Clamp(_scaleTransform.ScaleX, 0.2, 20);
+			_scaleTransform.ScaleX = Math.Clamp(_scaleTransform.ScaleX, 0.4, 20);
 			_scaleTransform.ScaleY = _scaleTransform.ScaleX;
+
+			ImageBorder.Width = MainCanvas.ActualWidth * _scaleTransform.ScaleX;
+			ImageBorder.Height = MainCanvas.ActualHeight * _scaleTransform.ScaleY;
+		}
+
+		private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			if (Keyboard.Modifiers == ModifierKeys.Control)
+			{
+
+				e.Handled = true;
+
+				double scale = Math.Sign(e.Delta) * 0.2;
+				_targetScale = _scaleTransform.ScaleX + _scaleTransform.ScaleX * scale;
+			}
+			else
+			{
+				e.Handled = false;
+			}
 		}
 	}
 }

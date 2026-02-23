@@ -20,12 +20,21 @@
         <Rectangle Grid.Row="1" Fill="DimGray" Panel.ZIndex="1"/>
         <Rectangle Grid.Row="2" Panel.ZIndex="-1"/>
 
-        <Image Grid.Row="2" Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
-               Source="{Binding Canvas.WriteableBitmap}"
-               MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
-               RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="None"
-               HorizontalAlignment="Center" VerticalAlignment="Center"
-               Panel.ZIndex="0"/>
+
+        <ScrollViewer Grid.Row="2" Name="ScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <Border Name="ImageBorder" BorderThickness="0" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
+                    
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
+                       Source="{Binding Canvas.WriteableBitmap}"
+                       MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="None"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Panel.ZIndex="0"/>
+            </Border>
+        </ScrollViewer>
+
 
         <Rectangle Grid.Row="3" Fill="DimGray" Panel.ZIndex="1"/>
     </Grid>
