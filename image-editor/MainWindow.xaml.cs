@@ -18,9 +18,6 @@ namespace image_editor
     {
 		private double _targetScale;
 		private ScaleTransform _scaleTransform;
-		private double _verticalOffset;
-		private double _horizontalOffset;
-
 
         public MainWindow()
         {
@@ -93,7 +90,6 @@ namespace image_editor
 		{
 			if (Keyboard.Modifiers == ModifierKeys.Control)
 			{
-
 				e.Handled = true;
 
 				double scale = Math.Sign(e.Delta) * 0.2;
