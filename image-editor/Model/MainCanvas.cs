@@ -1,7 +1,7 @@
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Color = System.Windows.Media.Color;
 using Point = System.Drawing.Point;
 
 namespace image_editor.Model
@@ -115,6 +115,14 @@ namespace image_editor.Model
 		protected void OnRender(object? sender, EventArgs e)
 		{
 			SetBitmap();
+		}
+
+		public void LoadBitmap(BitmapImage image)
+		{
+			PixelWidth = image.PixelWidth;
+			PixelHeight = image.PixelHeight;
+			image.CopyPixels(_frameBuffer, PixelWidth * 4, 0);
+			WriteableBitmap.WritePixels(new Int32Rect(0, 0, PixelWidth, PixelHeight), _frameBuffer, PixelWidth * 4, 0);
 		}
 	}
 }
