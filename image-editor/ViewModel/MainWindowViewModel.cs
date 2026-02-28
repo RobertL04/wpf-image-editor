@@ -1,10 +1,9 @@
 
 using image_editor.Model;
 using image_editor.MVVM;
-using System.Diagnostics;
-using System.Drawing;
-using System.Windows;
+using System.IO;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Point = System.Windows.Point;
 
 namespace image_editor.ViewModel
@@ -53,6 +52,22 @@ namespace image_editor.ViewModel
 		public void SetCanvasStatus(bool status)
 		{
 			Canvas.IsActive = status;
+		}
+
+		public void SaveAsPNG(string path)
+		{
+			using (FileStream stream = new FileStream(path, FileMode.Create))
+			{
+				BitmapEncoder encoder = new PngBitmapEncoder();
+				encoder.Frames.Add(BitmapFrame.Create(Canvas.WriteableBitmap));
+				encoder.Save(stream);
+			}
+		}
+
+		public void OpenPNG(string path)
+		{
+			BitmapImage image = new BitmapImage(new Uri(path));
+			Canvas.LoadBitmap(image);
 		}
     }
 }
