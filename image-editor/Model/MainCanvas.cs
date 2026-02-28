@@ -27,7 +27,6 @@ namespace image_editor.Model
 			IsActive = true;
 			_dirtyRect = new Int32Rect();
 
-
 			WriteableBitmap = new WriteableBitmap(PixelWidth, PixelHeight, 96, 96, PixelFormats.Bgra32, null);
 			WriteableBitmap.WritePixels(new Int32Rect(0, 0, PixelWidth, PixelHeight), _frameBuffer, PixelWidth * 4, 0);
 			CompositionTarget.Rendering += OnRender;
