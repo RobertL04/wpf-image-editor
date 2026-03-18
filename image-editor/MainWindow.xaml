@@ -26,13 +26,12 @@
 
         <ScrollViewer Grid.Row="2" Name="ScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                       PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
-            <Border Name="ImageBorder" BorderThickness="0" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
-                    
+            <Border Name="ImageBorder" BorderThickness="0" Width="{Binding PixelWidth}" Height="{Binding PixelHeight}"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image Name="MainCanvas" Width="{Binding Canvas.PixelWidth}" Height="{Binding Canvas.PixelHeight}"
+                <Image Name="MainCanvas"
                        Source="{Binding Canvas.WriteableBitmap}"
                        MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="None"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" Stretch="Fill"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        Panel.ZIndex="0"/>
             </Border>
