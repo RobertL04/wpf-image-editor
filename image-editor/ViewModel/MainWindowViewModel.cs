@@ -1,6 +1,7 @@
 
 using image_editor.Model;
 using image_editor.MVVM;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,6 +23,9 @@ namespace image_editor.ViewModel
 			}
 		}
 
+		public int PixelWidth => Canvas.PixelWidth;
+		public int PixelHeight => Canvas.PixelHeight;
+
 		public MainWindowViewModel()
 		{
 			Canvas = new MainCanvas(200, 200);
@@ -31,22 +35,24 @@ namespace image_editor.ViewModel
 		public void HandleMouseLeftClickDrag(Point mousePos)
 		{
 			System.Drawing.Point p0 = _prevMousePosition;
-			System.Drawing.Point p1 = new System.Drawing.Point((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y));
+			System.Drawing.Point p1 = new System.Drawing.Point((int)double.Floor(mousePos.X), (int)double.Floor(mousePos.Y));
 
 			Canvas.DrawPixelsBetween(p0, p1);
 
-			_prevMousePosition = p1;
+			SetPreviousMousePosition(p1);
 		}
 
 		public void HandleMousLeftButttonDown(Point mousePos)
 		{
-			Canvas.SetPixel((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y), Colors.Black);
-			SetPreviousMousePosition(mousePos);
+			int xPos = (int)double.Floor(mousePos.X);
+			int yPos = (int)double.Floor(mousePos.Y);
+			Canvas.SetPixel(xPos, yPos, Colors.Black);
+			SetPreviousMousePosition(new(xPos, yPos));
 		}
 
-		public void SetPreviousMousePosition(Point mousePos)
+		public void SetPreviousMousePosition(System.Drawing.Point mousePos)
 		{
-			_prevMousePosition = new System.Drawing.Point((int)double.Round(mousePos.X), (int)double.Round(mousePos.Y));
+			_prevMousePosition = mousePos;
 		}
 
 		public void SetCanvasStatus(bool status)

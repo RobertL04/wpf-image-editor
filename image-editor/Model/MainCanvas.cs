@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -6,11 +8,40 @@ using Point = System.Drawing.Point;
 
 namespace image_editor.Model
 {
-	class MainCanvas
+	class MainCanvas : INotifyPropertyChanged
 	{
-		public WriteableBitmap WriteableBitmap { get; set; }
-		public int PixelWidth { get; set; }
-		public int PixelHeight { get; set; }
+		public event PropertyChangedEventHandler? PropertyChanged;
+
+		private WriteableBitmap _writeableBitmap;
+		public WriteableBitmap WriteableBitmap
+		{
+			get { return _writeableBitmap; }
+			set
+			{
+				_writeableBitmap = value;
+				OnPropertyChanged();
+			}
+		}
+		private int _pixelWidth;
+		public int PixelWidth
+		{
+			get { return _pixelWidth; }
+			set
+			{
+				_pixelWidth = value;
+				OnPropertyChanged();
+			}
+		}
+		private int _pixelHeight;
+		public int PixelHeight
+		{
+			get { return _pixelHeight; }
+			set
+			{
+				_pixelHeight = value;
+				OnPropertyChanged();
+			}
+		}
 
 		public bool IsActive { get; set; }
 
@@ -37,6 +68,11 @@ namespace image_editor.Model
 		{
 			_frameBuffer = new byte[4 * PixelWidth * PixelHeight];
 			Array.Fill(_frameBuffer, (byte)255);
+		}
+
+		private void UpdateFramebufferSize()
+		{
+			_frameBuffer = new byte[4 * PixelWidth * PixelHeight];
 		}
 
 		public void DrawPixelsBetween(Point p0, Point p1)
@@ -121,8 +157,17 @@ namespace image_editor.Model
 		{
 			PixelWidth = image.PixelWidth;
 			PixelHeight = image.PixelHeight;
+
+			UpdateFramebufferSize();
 			image.CopyPixels(_frameBuffer, PixelWidth * 4, 0);
+
+			WriteableBitmap = new WriteableBitmap(PixelWidth, PixelHeight, 96, 96, PixelFormats.Bgra32, null);
 			WriteableBitmap.WritePixels(new Int32Rect(0, 0, PixelWidth, PixelHeight), _frameBuffer, PixelWidth * 4, 0);
+		}
+
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }
